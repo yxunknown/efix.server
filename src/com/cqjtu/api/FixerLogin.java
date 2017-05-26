@@ -8,10 +8,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.cqjtu.dao.FixerDao;
 import com.cqjtu.vo.Fixer;
 
-import net.sf.json.JSONObject;
 
 
 /**
@@ -49,14 +51,24 @@ public class FixerLogin extends HttpServlet {
 			FixerDao dao = new FixerDao();
 			Fixer user =dao.selectByNameAndPass(fixerphone, passWord);
 			if (user!=null) {
-			resp.accumulate("serverState",0);
-			resp.accumulate("serverMsg","账户存在，登陆成功。");
+			try {
+				resp.put("serverState",0);
+				resp.put("serverMsg","账户存在，登陆成功。");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			pw.write(resp.toString());
 				pw.flush();
 				pw.close();
 			} else {
-				resp.accumulate("serverState",1);
-				resp.accumulate("serverMsg","账户不存在，登陆失败。");
+				try {
+					resp.put("serverState",1);
+					resp.put("serverMsg","账户不存在，登陆失败。");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				pw.write(resp.toString());
 				pw.flush();
 				pw.close();
@@ -64,8 +76,13 @@ public class FixerLogin extends HttpServlet {
 		}
 		else
 		{
-			resp.accumulate("serverState",1);
-			resp.accumulate("serverMsg","账户信息不完整，登陆失败。");
+			try {
+				resp.put("serverState",1);
+				resp.put("serverMsg","账户信息不完整，登陆失败。");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			pw.write(resp.toString());
 			pw.flush();
 			pw.close();

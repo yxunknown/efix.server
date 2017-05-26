@@ -8,7 +8,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONObject;
+
+
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.cqjtu.dao.FixerDao;
 import com.cqjtu.vo.Fixer;
@@ -51,14 +55,24 @@ public class FixerUpdate extends HttpServlet {
 			user.setIdentification(identification);
 			int i= dao.fixerUpdate(user);
 			if (i>0) {
-			resp.accumulate("serverState",0);
-			resp.accumulate("serverMsg","账户存在，修改成功。");
+			try {
+				resp.put("serverState",0);
+				resp.put("serverMsg","账户存在，修改成功。");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			pw.write(resp.toString());
 				pw.flush();
 				pw.close();
 			} else {
-				resp.accumulate("serverState",1);
-				resp.accumulate("serverMsg","账户不存在，修改失败。");
+				try {
+					resp.put("serverState",1);
+					resp.put("serverMsg","账户不存在，修改失败。");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				pw.write(resp.toString());
 				pw.flush();
 				pw.close();
@@ -66,8 +80,13 @@ public class FixerUpdate extends HttpServlet {
 		}
 		else
 		{
-			resp.accumulate("serverState",1);
-			resp.accumulate("serverMsg","账户信息不完整，修改失败。");
+			try {
+				resp.put("serverState",1);
+				resp.put("serverMsg","账户信息不完整，修改失败。");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			pw.write(resp.toString());
 			pw.flush();
 			pw.close();

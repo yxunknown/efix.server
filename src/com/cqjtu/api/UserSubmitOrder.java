@@ -8,7 +8,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONObject;
+
+
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.cqjtu.dao.OrderDao;
 import com.cqjtu.vo.Order;
@@ -53,14 +57,24 @@ public class UserSubmitOrder extends HttpServlet {
 			user.setOrderInfo(orderInfo);
 			int i=dao.orderRegister(user);
 			if (i>0) {
-			resp.accumulate("serverState",0);
-			resp.accumulate("serverMsg","用户提交订单成功。");
+			try {
+				resp.put("serverState",0);
+				resp.put("serverMsg","用户提交订单成功。");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			pw.write(resp.toString());
 				pw.flush();
 				pw.close();
 			} else {
-				resp.accumulate("serverState",1);
-				resp.accumulate("serverMsg","用户提交订单失败。");
+				try {
+					resp.put("serverState",1);
+					resp.put("serverMsg","用户提交订单失败。");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				pw.write(resp.toString());
 				pw.flush();
 				pw.close();
@@ -68,8 +82,13 @@ public class UserSubmitOrder extends HttpServlet {
 		}
 		else
 		{
-			resp.accumulate("serverState",1);
-			resp.accumulate("serverMsg","订单信息不完整，用户提交订单失败。");
+			try {
+				resp.put("serverState",1);
+				resp.put("serverMsg","订单信息不完整，用户提交订单失败。");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			pw.write(resp.toString());
 			pw.flush();
 			pw.close();

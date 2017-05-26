@@ -8,7 +8,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONObject;
+
+
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.cqjtu.dao.UserDao;
 import com.cqjtu.vo.User;
@@ -51,14 +55,24 @@ public class UserRegister extends HttpServlet {
 			User user = new User(userName,passWord,userPhone);
 			int i=dao.userRegister(user);
 			if (i>0) {
-				resp.accumulate("serverState",0);
-				resp.accumulate("serverMsg","注册成功。");
+				try {
+					resp.put("serverState",0);
+					resp.put("serverMsg","注册成功。");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				pw.write(resp.toString());
 				pw.flush();
 				pw.close();
 			} else {
-				resp.accumulate("serverState",1);
-				resp.accumulate("serverMsg","账户已存在，注册失败。");
+				try {
+					resp.put("serverState",0);
+					resp.put("serverMsg","注册成功。");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				pw.write(resp.toString());
 				pw.flush();
 				pw.close();
@@ -66,8 +80,13 @@ public class UserRegister extends HttpServlet {
 		}
 		else
 		{
-			resp.accumulate("serverState",1);
-			resp.accumulate("serverMsg","注册信息不完整，登陆失败。");
+			try {
+				resp.put("serverState",0);
+				resp.put("serverMsg","注册成功。");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			pw.write(resp.toString());
 			pw.flush();
 			pw.close();
